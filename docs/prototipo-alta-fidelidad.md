@@ -35,10 +35,15 @@ Incluir estados de saldo insuficiente, recarga rechazada y conexión no disponib
 - Los botones principales son legibles y fáciles de identificar.
 - La presentación distingue el prototipo visual de las funciones pendientes del PMV.
 
+## Primera implementación local
+
+Se eligió una app Android nativa con Kotlin y Jetpack Compose en `apps/passenger`. Incluye bienvenida con cuenta demo, inicio, recarga con confirmación, pase simulado, historial con filtros y detalles, y perfil con controles de demostración. Identidad visual inicial: verde petróleo, lima y fondo claro.
+
+El registro y login reales no forman parte de esta primera versión. Los datos se guardan en el dispositivo. Consultar la [guía de ejecución](../apps/passenger/README.md).
+
 ## Decisiones pendientes
 
-- Herramienta y formato de entrega del prototipo.
-- Identidad visual y referencias de diseño.
+- Validar la identidad visual inicial y ajustar el recorrido según la revisión del equipo.
 - Inclusión de vistas del lector o del panel en esta primera presentación.
 
 El plan original se conserva en [plan-pmv.md](plan-pmv.md) como referencia; sus tareas y asignaciones no implican que ya estén ejecutadas o aprobadas por el equipo.
