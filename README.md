@@ -4,9 +4,9 @@ Prototipo académico de una billetera para transporte público: saldo simulado, 
 
 ## Estado actual
 
-Repositorio inicial de un equipo de cinco integrantes. Aún no contiene aplicaciones ejecutables.
+Proyecto de un equipo de cinco integrantes. La primera aplicación Android local está en `apps/passenger`, construida con Kotlin y Jetpack Compose.
 
-**Primer hito: prototipo de alta fidelidad para el lunes 16 de noviembre de 2026.** La prioridad es definir las pantallas y demostrar el recorrido del pasajero con datos ficticios. El formato del prototipo y su herramienta de implementación están pendientes de definir.
+**Versión local 0.2: integración del prototipo ampliado (22 de noviembre de 2026).** La app permite explorar una cuenta ficticia, recargar, simular viajes y transbordos, consultar movimientos y cambiar escenarios de prueba. Incluye login y registro simulados, operadores, transbordos, comprobantes y escenarios de error. El saldo y el historial se conservan por cuenta local al cerrar la app o cerrar sesión. Se migran los datos de la versión anterior.
 
 El prototipo visual no acredita una integración NFC funcional. El PMV posterior contempla NFC real entre dos dispositivos Android, un backend y un panel administrativo.
 
@@ -20,13 +20,14 @@ El prototipo visual no acredita una integración NFC funcional. El PMV posterior
 | `services/api` | Backend modular y reglas de negocio |
 | `docs` | Plan, alcance y documentación del prototipo |
 
-La arquitectura del plan propone Kotlin y Jetpack Compose para Android, NestJS para la API, PostgreSQL para persistencia y Next.js para el panel. No se han instalado dependencias ni generado estos proyectos todavía.
+La arquitectura del plan propone Kotlin y Jetpack Compose para Android, NestJS para la API, PostgreSQL para persistencia y Next.js para el panel. Solo la app del pasajero está implementada como prototipo; lector, API y panel siguen pendientes. No se requiere hosting.
 
 ## Documentación
 
 - [Plan de referencia del PMV y equipo de cinco integrantes](docs/plan-pmv.md).
 - [Alcance inicial del prototipo de alta fidelidad](docs/prototipo-alta-fidelidad.md).
 - [Guía de colaboración](CONTRIBUTING.md).
+- [Ejecutar la app Android y presentar la demo](apps/passenger/README.md).
 
 ## Empezar
 
@@ -35,7 +36,7 @@ git clone https://github.com/Sai1911/MoviWallet.git
 cd MoviWallet
 ```
 
-Los comandos de instalación y ejecución se incorporarán cuando se cree la primera aplicación.
+Abrir `apps/passenger` como proyecto en Android Studio, sincronizar Gradle y ejecutar la configuración `app` en un emulador o teléfono Android 8.0 o superior. Consultar la guía de la aplicación para compilar por terminal.
 
 ## Datos de demostración
 
