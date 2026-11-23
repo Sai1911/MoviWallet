@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('build', 'run', 'test')]
+    [ValidateSet('build', 'run', 'test', 'ui-test')]
     [string]$Action = 'run'
 )
 
@@ -16,11 +16,12 @@ try {
     if (-not $env:ANDROID_HOME) { $env:ANDROID_HOME = Join-Path $env:LOCALAPPDATA 'Android\Sdk' }
     $moviAdb = Join-Path $env:ANDROID_HOME 'platform-tools\adb.exe'
     if (-not (Test-Path $moviAdb)) { throw 'Configura ANDROID_HOME con la carpeta de tu Android SDK.' }
-    $moviTasks = switch ($Action) {
+    $moviTasks = @(switch ($Action) {
         'build' { @(':app:assembleDebug') }
-        'test' { @(':app:testDebugUnitTest', ':app:lintDebug') }
+        'test' { @(':app:testQaUnitTest', ':app:lintDebug') }
         'run' { @(':app:assembleDebug') }
-    }
+        'ui-test' { @(':app:connectedQaAndroidTest') }
+    })
     & .\gradlew.bat @moviTasks --console=plain
     if ($LASTEXITCODE -ne 0) { throw 'Gradle terminó con errores. Revisa la salida anterior.' }
     if ($Action -eq 'run') {

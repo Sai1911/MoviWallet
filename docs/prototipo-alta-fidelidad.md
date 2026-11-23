@@ -47,3 +47,11 @@ El registro y login reales no forman parte de esta primera versión. Los datos s
 - Inclusión de vistas del lector o del panel en esta primera presentación.
 
 El plan original se conserva en [plan-pmv.md](plan-pmv.md) como referencia; sus tareas y asignaciones no implican que ya estén ejecutadas o aprobadas por el equipo.
+
+## Integración de la versión 0.2 (22 de noviembre de 2026)
+
+Se incorporaron desde el ZIP las pantallas y componentes Compose de bienvenida, login, registro, recuperación, inicio, billetera, operadores, perfil, recarga, pago, transbordos y comprobantes. Se mantuvieron la configuración Android, el identificador de aplicación y las herramientas de ejecución del repositorio.
+
+Se agregó persistencia por cuenta demo y migración de datos de la versión anterior. Se conservó la protección ante lectura repetida, se añadió el escenario de recarga sin conexión y se separó la aplicación de pruebas para no borrar los datos de la demo habitual. No se importaron cachés ni carpetas de compilación del ZIP.
+
+Login, recuperación y NFC siguen siendo simulaciones. El alcance completo del PMV continúa pendiente. La guía de ejecución contiene el recorrido actualizado y los comandos de prueba.

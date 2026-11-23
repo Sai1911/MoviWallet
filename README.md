@@ -6,7 +6,7 @@ Prototipo académico de una billetera para transporte público: saldo simulado, 
 
 Proyecto de un equipo de cinco integrantes. La primera aplicación Android local está en `apps/passenger`, construida con Kotlin y Jetpack Compose.
 
-**Primer hito: prototipo de alta fidelidad para el lunes 16 de noviembre de 2026.** La app permite explorar una cuenta ficticia, recargar, simular viajes y transbordos, consultar movimientos y cambiar escenarios de prueba. El saldo y el historial se conservan localmente al cerrar la app.
+**Versión local 0.2: integración del prototipo ampliado (22 de noviembre de 2026).** La app permite explorar una cuenta ficticia, recargar, simular viajes y transbordos, consultar movimientos y cambiar escenarios de prueba. Incluye login y registro simulados, operadores, transbordos, comprobantes y escenarios de error. El saldo y el historial se conservan por cuenta local al cerrar la app o cerrar sesión. Se migran los datos de la versión anterior.
 
 El prototipo visual no acredita una integración NFC funcional. El PMV posterior contempla NFC real entre dos dispositivos Android, un backend y un panel administrativo.
 

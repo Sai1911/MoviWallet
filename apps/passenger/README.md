@@ -1,47 +1,49 @@
 # MoviWallet · app del pasajero
 
-Prototipo Android nativo con Kotlin y Jetpack Compose. Funciona sin servidor y sin hosting. Usa una cuenta ficticia (Alex Luna) y almacena el saldo y movimientos en las preferencias privadas de la app. No solicita permisos de internet ni NFC.
+Demo Android local con Kotlin y Jetpack Compose. La versión 0.2 integra las pantallas de `MoviWallet.zip` con la persistencia y las verificaciones del proyecto original. No necesita hosting ni servidor.
 
-## Abrir y ejecutar
+## Ejecutar en Windows
 
-1. En Android Studio, abrir esta carpeta (`apps/passenger`), no la raíz del monorepositorio.
-2. Usar el JDK integrado de Android Studio para Gradle y tener instalado Android SDK 36.
-3. Sincronizar Gradle. La primera sincronización necesita internet para las dependencias; la demo funciona sin conexión después.
-4. Elegir un emulador o teléfono con Android 8.0 (API 26) o superior y pulsar Run en el módulo `app`.
-
-Versiones fijadas: AGP 9.3.1, Gradle 9.5.0, compilador Compose 2.2.10 (alineado con el Kotlin integrado de AGP), Compose BOM 2025.08.01. Se usa el SDK 36 instalado en el entorno de desarrollo.
-
-Por terminal, configurar `JAVA_HOME` con un JDK compatible (el integrado de Android Studio) y `ANDROID_HOME` con la carpeta del SDK, o dejar que Android Studio genere `local.properties`:
+Abrir esta carpeta en Android Studio; instalar SDK 36 y usar su JDK integrado. Encender un emulador o conectar un teléfono autorizado (Android 8.0 o superior).
 
 ```powershell
-.\gradlew.bat :app:assembleDebug :app:testDebugUnitTest :app:lintDebug
+.\local.ps1 run
 ```
 
-APK generado: `app/build/outputs/apk/debug/app-debug.apk`.
+El script compila, instala sobre la versión anterior y abre la app. No desinstales la aplicación si quieres conservar sus datos. Para compilar solamente: `./local.ps1 build`. APK: `app/build/outputs/apk/debug/app-debug.apk`.
 
-En Windows también se puede usar `./local.ps1 run` desde esta carpeta con un emulador abierto o un teléfono autorizado. El script busca el JDK de Android Studio y el SDK local, compila, instala y abre la app. `./local.ps1 build` solo compila y `./local.ps1 test` ejecuta pruebas unitarias y lint. No inicia ni configura dispositivos automáticamente.
+## Verificaciones automáticas
 
-Con un emulador encendido, la prueba de interfaz se ejecuta con `./gradlew.bat :app:connectedDebugAndroidTest`. Esta prueba reinicia los datos ficticios de la aplicación y comprueba recarga, viaje, transbordo, historial y persistencia.
+```powershell
+.\local.ps1 test
+.\local.ps1 ui-test
+```
 
-## Guion breve de presentación
+`test` ejecuta JUnit y lint. `ui-test` necesita un emulador y ejecuta el recorrido visual y las pruebas de persistencia y errores. Estas pruebas usan **MoviWallet Pruebas** (`pe.moviwallet.passenger.qa`) y reinician únicamente sus datos, sin borrar la billetera habitual.
 
-1. Pulsar **Explorar demo**. La billetera inicia en S/ 0.
-2. Recargar S/ 10 y confirmar: saldo S/ 10.
-3. Abrir **Pase**, elegir **Operador A** y simular el viaje: saldo S/ 8.
-4. Elegir **Operador B** y simular el viaje dentro de 120 minutos: descuento de S/ 0.50 y saldo S/ 6.
-5. Abrir **Actividad**, filtrar viajes o recargas y tocar un movimiento para ver su comprobante.
-6. En **Perfil**, probar falta de conexión o recarga rechazada. El saldo permanece igual al fallar.
-7. Reiniciar la demostración desde Perfil, activar el perfil estudiantil y repetir la recarga y los viajes: saldo final S/ 8.25.
+Tareas equivalentes de Gradle: `:app:assembleDebug`, `:app:testQaUnitTest`, `:app:lintDebug`, `:app:connectedQaAndroidTest`. En Android Studio elegir la variante `debug` para uso habitual y `qa` para instrumentación.
 
-Una segunda lectura consecutiva del mismo operador antes de 30 segundos se rechaza. Solo se permite un descuento de transbordo por ventana. La ventana empieza con el primer viaje y vence exactamente a los 120 minutos.
+## Recorrido para corroborar el funcionamiento
 
-## Límites de esta versión
+1. Entrar con **Explorar con cuenta demo**. Si ya había datos, se restauran; para empezar en cero usar **Perfil → Reiniciar demostración**.
+2. Con perfil normal, recargar S/ 10 y confirmar. Debe aparecer **Recarga exitosa** y saldo S/ 10.
+3. En **Pagar**, elegir Operador A y acercar el teléfono mediante el botón simulado. Resultado: S/ 8.
+4. Pagar con Operador B dentro de 120 minutos: descuento de S/ 0.50, cobro S/ 2 y saldo S/ 6.
+5. Abrir el comprobante y la billetera: revisar movimientos, descuentos y saldo después de cada operación.
+6. Repetir inmediatamente el último operador: se rechaza durante 30 segundos y no cambia el saldo.
+7. Cerrar y abrir la app: deben conservarse sesión, saldo, historial, perfil y ventana de transbordo. Cerrar sesión y entrar con la misma cuenta también conserva la billetera.
+8. Reiniciar la demo, elegir perfil universitario y repetir recarga y viajes A/B: saldo final S/ 8.25.
+9. En los controles de escenario de recarga y pago, probar rechazo, timeout, sin conexión, credencial inválida y saldo insuficiente. No deben generar movimientos ni modificar saldo.
+10. En transbordos, avanzar el reloj de demostración para verificar el vencimiento. El descuento se aplica una sola vez por ventana y vence a los 120 minutos.
 
-- Ingreso directo a una cuenta demo; registro y autenticación real pendientes.
-- El botón de viaje simula NFC. No hay lectura ni firma criptográfica implementadas.
-- Las opciones del perfil son controles de presentación, no permisos administrativos reales.
-- Persistencia local para la demo; no es una base financiera ni implementa garantías transaccionales del backend.
-- El modo sin conexión se simula explícitamente con un interruptor; la app no depende de la conectividad real.
-- El historial persiste al reiniciar la app, pero se borra al reinstalar o reiniciar la demo. Los interruptores de error se restablecen al iniciar un proceso nuevo.
+## Datos y límites
 
-Las reglas de demostración se prueban con JUnit. La API, la autenticación real, la consistencia financiera y el lector NFC se incorporarán en etapas posteriores.
+- Cada correo ficticio tiene una billetera local separada. Login, registro y recuperación son demostrativos: no verifican identidad ni guardan contraseñas.
+- La cuenta anterior se migra una sola vez a `demo@moviwallet.pe`, conservando saldo, movimientos, perfil y estado de transbordo. Las preferencias originales permanecen intactas.
+- Reiniciar demo borra la billetera activa; cerrar sesión la conserva. Desinstalar borra los datos locales.
+- NFC, recargas y errores de conectividad son simulados. No se envía dinero ni existe conexión con la ATU.
+- Biometría y notificaciones son preferencias visuales, sin funciones reales asociadas.
+- El almacenamiento local sirve para demostraciones; no implementa seguridad ni garantías financieras de producción.
+- Backend, lector NFC, panel administrativo y autenticación real siguen pendientes.
+
+Versiones: AGP 9.3.1, Gradle 9.5.0, compilador Compose 2.2.10, Compose BOM 2025.08.01 y SDK 36. La primera compilación requiere conexión para descargar dependencias.
